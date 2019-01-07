@@ -1,0 +1,27 @@
+{
+  "name": "slack-graph-ql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r esm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ahmed-Aljasim/slack-graph-ql.git"
+  },
+  "author": "A.J.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ahmed-Aljasim/slack-graph-ql/issues"
+  },
+  "homepage": "https://github.com/Ahmed-Aljasim/slack-graph-ql#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.3.1",
+    "esm": "^3.0.84",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2"
+  }
+}
