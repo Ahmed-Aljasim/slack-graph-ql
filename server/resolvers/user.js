@@ -1,4 +1,5 @@
 import { User } from '../models';
+import { hash, compare } from 'bcryptjs';
 
 export default {
   Query: {
@@ -6,10 +7,20 @@ export default {
     allUsers: () => User.find({})
   },
   Mutation: {
-    createUser: async (root, args) => {
-      const user = await User.create(args);
+    register: async (root, { password, ...otherArgs }) => {
+      try {
+        const hashedPassword = await hash(password, 10);
+        await User.create({
+          ...otherArgs,
+          password: hashedPassword
+        });
 
-      return user;
+        return true;
+      } catch (err) {
+        console.log(err);
+
+        return false;
+      }
     }
   }
 };
