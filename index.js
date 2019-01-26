@@ -1,22 +1,38 @@
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
+import express from 'express';
+import mongoose from 'mongoose';
+import { ApolloServer } from 'apollo-server-express';
 
-import typeDefs from "./schema";
-import resolvers from "./resolvers";
+import typeDefs from './typeDefs';
+import resolvers from './resolvers';
 
-const app = express();
+import keys from './config/keys';
 
-app.disable("x-powered-by");
+const { mongoUser, mongoPass, port } = keys;
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  playground: true,
-  context: ({ req, res }) => ({ req, res })
-});
+(async () => {
+  try {
+    await mongoose.connect(
+      `mongodb+srv://${mongoUser}:${mongoPass}@cluster0-ca68v.mongodb.net/test?retryWrites=true`,
+      { useNewUrlParser: true, useCreateIndex: true }
+    );
 
-server.applyMiddleware({ app, cors: true });
+    const app = express();
 
-app.listen({ port: 5050 }, () =>
-  console.log(`http://localhost:5050${server.graphqlPath}`)
-);
+    app.disable('x-powered-by');
+
+    const server = new ApolloServer({
+      typeDefs,
+      resolvers,
+      playground: true,
+      context: ({ req, res }) => ({ req, res })
+    });
+
+    server.applyMiddleware({ app, cors: true });
+
+    app.listen({ port }, () =>
+      console.log(`http://localhost:${port}${server.graphqlPath}`)
+    );
+  } catch (err) {
+    console.error(err);
+  }
+})();
